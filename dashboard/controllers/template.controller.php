@@ -1,7 +1,6 @@
 <?php 
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+
 
 class TemplateController{
 
@@ -270,75 +269,71 @@ class TemplateController{
 		return $password;
 	}
 
-	/*=============================================
-	Función para enviar correos electrónicos
-	=============================================*/
-
-	 static public function sendEmail($subject, $email, $title, $message, $link){
-
-		date_default_timezone_set("Europe/Madrid");
-
-		$mail = new PHPMailer;
-
-		$mail->CharSet = 'utf-8';
-		//$mail->Encoding = 'base64'; //Habilitar al subir el sistema a un hosting
-
-		$mail->isMail();
-
-		$mail->UseSendmailOptions = 0;
-
-		$mail->setFrom("noreply@dashboard.com","CMS-BUILDER");
-
-		$mail->Subject = $subject;
-
-		$mail->addAddress($email);
-
-		$mail->msgHTML('
-
-			<div style="width:100%; background:#eee; position:relative; font-family:sans-serif; padding-top:40px; padding-bottom: 40px;">
 	
-				<div style="position:relative; margin:auto; width:600px; background:white; padding:20px">
-					
-					<center>
-						
-						<h3 style="font-weight:100; color:#999">'.$title.'</h3>
+/*=============================================
+Función para enviar correos electrónicos
+=============================================*/
 
-						<hr style="border:1px solid #ccc; width:80%">
+static public function sendEmail($subject, $email, $title, $message, $link){
 
-						'.$message.'
+    date_default_timezone_set("Europe/Madrid");
 
-						<a href="'.$link.'" target="_blank" style="text-decoration: none; mrgin-top:10px">
+    $resend = Resend::client($_ENV["RESEND_API_KEY"]);
 
-							<div style="line-height:25px; background:#000; width:60%; padding:10px; color:white; border-radius:5px">Haz clic aquí</div>
+    $html = '
 
-						</a>
+        <div style="width:100%; background:#eee; position:relative; font-family:sans-serif; padding-top:40px; padding-bottom:40px;">
 
-						<hr style="border:1px solid #ccc; width:80%">
+            <div style="position:relative; margin:auto; width:600px; background:white; padding:20px">
 
-						<h5 style="font-weight:100; color:#999">Si no solicitó el envío de este correo, haga caso omiso de este mensaje.</h5>
+                <center>
 
-					</center>
+                    <h3 style="font-weight:100; color:#999">'.$title.'</h3>
 
-				</div>
+                    <hr style="border:1px solid #ccc; width:80%">
 
-			</div>	
+                    '.$message.'
 
-		 ');
+                    <a href="'.$link.'" target="_blank" style="text-decoration:none; margin-top:10px">
 
-		$send = $mail->Send();
+                        <div style="line-height:25px; background:#000; width:60%; padding:10px; color:white; border-radius:5px">
+                            Haz clic aquí
+                        </div>
 
-		if(!$send){
+                    </a>
 
-			return $mail->ErrorInfo;	
-		
-		}else{
+                    <hr style="border:1px solid #ccc; width:80%">
 
-			return "ok";
+                    <h5 style="font-weight:100; color:#999">
+                        Si no solicitó el envío de este correo, haga caso omiso de este mensaje.
+                    </h5>
 
-		}
+                </center>
 
-	}
- 
+            </div>
+
+        </div>
+
+    ';
+
+    try {
+
+        $resend->emails->send([
+            'from' => 'onboarding@resend.dev',
+            'to' => $email,
+            'subject' => $subject,
+            'html' => $html
+        ]);
+
+        return "ok";
+
+    } catch (\Exception $e) {
+
+        return "Error Resend: ".$e->getMessage();
+
+    }
+
 }
 
+}
 ?>

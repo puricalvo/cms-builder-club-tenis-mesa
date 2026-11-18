@@ -6,6 +6,8 @@ $fields = array();
 
 $pages  = CurlController::request($url,$method,$fields);
 
+
+
 if($pages->status == 200){
 
 	$pages = $pages->results;
@@ -36,6 +38,8 @@ if($pages->status == 200){
 	</div>
 
 	<hr class="mt-0 borderDashboard">
+
+
 
 	<ul class="list-group list-group-flush" id="sortable">
 

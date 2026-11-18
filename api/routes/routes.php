@@ -33,10 +33,13 @@ if(count($routesArray) == 1 && isset($_SERVER['REQUEST_METHOD'])){
 
 	$table = explode("?", $routesArray[1])[0];
 
+	
+
 	/*=============================================
 	Validar llave secreta
 	=============================================*/
 
+	
 	if(!isset(getallheaders()["Authorization"]) || getallheaders()["Authorization"] != Connection::apikey()){
 
 		if(in_array($table, Connection::publicAccess()) == 0){

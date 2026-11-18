@@ -1,0 +1,272 @@
+
+---
+import Layout from "../layouts/Layout.astro";
+
+const matches = [
+  {
+    league: "Competición · Liga",
+    date: "Próximamente",
+    home: "CTM SAN JUAN",
+    away: "Equipo visitante",
+    location: "San Juan de Aznalfarache"
+  },
+  {
+    league: "Competición · Liga",
+    date: "Próximamente",
+    home: "CTM SAN JUAN",
+    away: "Equipo visitante",
+    location: "San Juan de Aznalfarache"
+  },
+  {
+    league: "Competición · Liga",
+    date: "Próximamente",
+    home: "CTM SAN JUAN",
+    away: "Equipo visitante",
+    location: "San Juan de Aznalfarache"
+  }
+];
+
+const news = [
+  {
+    category: "Actualidad del club",
+    title: "Bienvenidos a la nueva web del CTM San Juan",
+    description: "Un nuevo espacio para seguir toda la actualidad, los partidos y los resultados de nuestro club.",
+    image: "/images/tenis-mesa-1.jpg"
+  },
+  {
+    category: "Competición",
+    title: "Preparados para una nueva temporada",
+    description: "Seguimos trabajando y entrenando para afrontar los nuevos retos deportivos.",
+    image: "/images/tenis-mesa-2.jpg"
+  },
+  {
+    category: "El club",
+    title: "Deporte, esfuerzo y compañerismo",
+    description: "El tenis de mesa es mucho más que competir. Es aprender, compartir y disfrutar.",
+    image: "/images/tenis-mesa-3.jpg"
+  }
+];
+---
+
+<Layout
+  title="CTM San Juan | Club de Tenis de Mesa"
+  description="Web oficial del Club de Tenis de Mesa San Juan de Aznalfarache. Consulta partidos, resultados y noticias."
+>
+
+  <!-- PORTADA -->
+
+  <section class="hero">
+    <div class="hero-content">
+
+      <span class="hero-label">
+        Club de Tenis de Mesa · Sevilla
+      </span>
+
+      <h1>
+        PASIÓN POR
+        <span>EL TENIS</span>
+        DE MESA
+      </h1>
+
+      <p class="hero-description">
+        Bienvenidos al Club de Tenis de Mesa San Juan.
+        Un club donde el esfuerzo, la competición y el compañerismo
+        se encuentran alrededor de una mesa.
+      </p>
+
+      <div class="hero-actions">
+        <a href="/calendario" class="btn btn-primary">
+          Próximos partidos <span>→</span>
+        </a>
+
+        <a href="/club" class="btn btn-outline">
+          Conoce nuestro club
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PRESENTACIÓN -->
+
+  <section class="intro-strip">
+
+    <div class="intro-item">
+      <span class="intro-number">01</span>
+      <div>
+        <strong>COMPETICIÓN</strong>
+        <small>Superación y espíritu deportivo</small>
+      </div>
+    </div>
+
+    <div class="intro-item">
+      <span class="intro-number">02</span>
+      <div>
+        <strong>COMPAÑERISMO</strong>
+        <small>Un club, una familia</small>
+      </div>
+    </div>
+
+    <div class="intro-item">
+      <span class="intro-number">03</span>
+      <div>
+        <strong>SAN JUAN</strong>
+        <small>Orgullo de nuestro municipio</small>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PRÓXIMOS PARTIDOS -->
+
+  <section class="section matches-section">
+
+    <div class="container">
+
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">En la mesa</span>
+          <h2 class="section-title">Próximos partidos</h2>
+          <p class="section-description">
+            Sigue los próximos encuentros de nuestros equipos.
+          </p>
+        </div>
+
+        <a href="/calendario" class="text-link">
+          Ver calendario completo →
+        </a>
+      </div>
+
+      <div class="match-grid">
+
+        {matches.map((match) => (
+          <article class="match-card">
+
+            <span class="match-league">{match.league}</span>
+
+            <p class="match-date">{match.date}</p>
+
+            <div class="match-teams">
+
+              <div class="match-team">
+                {match.home}
+                <small>LOCAL</small>
+              </div>
+
+              <span class="match-vs">VS</span>
+
+              <div class="match-team">
+                {match.away}
+                <small>VISITANTE</small>
+              </div>
+
+            </div>
+
+            <div class="match-location">
+              📍 {match.location}
+            </div>
+
+          </article>
+        ))}
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- NOTICIAS -->
+
+  <section class="section">
+
+    <div class="container">
+
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Actualidad</span>
+          <h2 class="section-title">Noticias del club</h2>
+          <p class="section-description">
+            Toda la actualidad del CTM San Juan.
+          </p>
+        </div>
+
+        <a href="/noticias" class="text-link">
+          Todas las noticias →
+        </a>
+      </div>
+
+      <div class="news-grid">
+
+        {news.map((item) => (
+          <article class="news-card">
+
+            <img
+              src={item.image}
+              alt={item.title}
+              class="news-image"
+              loading="lazy"
+            />
+
+            <div class="news-content">
+
+              <span class="news-category">
+                {item.category}
+              </span>
+
+              <h3 class="news-title">
+                {item.title}
+              </h3>
+
+              <p class="news-description">
+                {item.description}
+              </p>
+
+              <a href="/noticias" class="news-more">
+                Más información →
+              </a>
+
+            </div>
+
+          </article>
+        ))}
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- PRESENTACIÓN DEL CLUB -->
+
+  <section class="club-banner">
+
+    <div class="container">
+
+      <div class="club-banner-content">
+
+        <span class="eyebrow" style="color: var(--yellow)">
+          Nuestra identidad
+        </span>
+
+        <h2>
+          SOMOS CTM SAN JUAN.
+          SOMOS EQUIPO.
+        </h2>
+
+        <p>
+          Representamos a San Juan de Aznalfarache con ilusión,
+          esfuerzo y pasión por el tenis de mesa.
+          Queremos seguir creciendo dentro y fuera de la competición.
+        </p>
+
+        <a href="/club" class="btn btn-primary">
+          Descubre nuestro club →
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</Layout>

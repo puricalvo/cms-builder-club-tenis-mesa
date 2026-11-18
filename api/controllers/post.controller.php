@@ -97,109 +97,101 @@ class PostController{
 
 	}
 
-	/*=============================================
-	Peticion POST para login de usuario
-	=============================================*/
+
 
 	static public function postLogin($table, $data, $suffix){
 
-		/*=============================================
-		Validar que el usuario exista en BD
-		=============================================*/
+    // Buscar administrador por correo
+    $response = GetModel::getDataFilter(
+        $table,
+        "*",
+        "email_".$suffix,
+        $data["email_".$suffix],
+        null,
+        null,
+        null,
+        null
+    );
 
-		$response = GetModel::getDataFilter($table, "*", "email_".$suffix, $data["email_".$suffix], null,null,null,null);
-		
-		if(!empty($response)){	
+    if(!empty($response)){
 
-			if($response[0]->{"password_".$suffix} != null)	{
-			
-				/*=============================================
-				Encriptamos la contraseña
-				=============================================*/
+        // No permitir acceso sin contraseña
+        if(
+            !isset($data["password_".$suffix]) ||
+            trim($data["password_".$suffix]) === "" ||
+            empty($response[0]->{"password_".$suffix})
+        ){
 
-				$crypt = crypt($data["password_".$suffix], $_ENV["PASSWORD_SALT"]);
+            $return = new PostController();
+            $return->fncResponse(null, "Wrong email or password", $suffix);
+            return;
+        }
 
-				if($response[0]->{"password_".$suffix} == $crypt){
-					
+        // Comprobar contraseña
+        $crypt = crypt(
+            $data["password_".$suffix],
+            $_ENV["PASSWORD_SALT"]
+        );
 
-					$token = Connection::jwt($response[0]->{"id_".$suffix}, $response[0]->{"email_".$suffix});
+        if($response[0]->{"password_".$suffix} !== $crypt){
 
-					$jwt = JWT::encode($token, $_ENV["JWT_SECRET"], "HS256");
+            $return = new PostController();
+            $return->fncResponse(null, "Wrong email or password", $suffix);
+            return;
+        }
 
-					/*=============================================
-					Actualizamos la base de datos con el Token del usuario
-					=============================================*/
+        // Comprobar estado del administrador
+        if($suffix == "admin" && (int)$response[0]->status_admin !== 1){
 
-					$data = array(
+            $return = new PostController();
+            $return->fncResponse(null, "Administrator disabled", $suffix);
+            return;
+        }
 
-						"token_".$suffix => $jwt,
-						"token_exp_".$suffix => $token["exp"]
+        // Generar token únicamente después de validar contraseña
+        $token = Connection::jwt(
+            $response[0]->{"id_".$suffix},
+            $response[0]->{"email_".$suffix}
+        );
 
-					);
+        $jwt = JWT::encode($token, $_ENV["JWT_SECRET"], "HS256");
 
-					$update = PutModel::putData($table, $data, $response[0]->{"id_".$suffix}, "id_".$suffix);
+        $dataToken = array(
+            "token_".$suffix => $jwt,
+            "token_exp_".$suffix => $token["exp"]
+        );
 
-					if(isset($update["comment"]) && $update["comment"] == "The process was successful" ){
+        $update = PutModel::putData(
+            $table,
+            $dataToken,
+            $response[0]->{"id_".$suffix},
+            "id_".$suffix
+        );
 
-						$response[0]->{"token_".$suffix} = $jwt;
-						$response[0]->{"token_exp_".$suffix} = $token["exp"];
+        if(
+            isset($update["comment"]) &&
+            $update["comment"] == "The process was successful"
+        ){
 
-						$return = new PostController();
-						$return -> fncResponse($response, null,$suffix);
+            $response[0]->{"token_".$suffix} = $jwt;
+            $response[0]->{"token_exp_".$suffix} = $token["exp"];
 
-					}
-					
-					
-				}else{
+            $return = new PostController();
+            $return->fncResponse($response, null, $suffix);
+            return;
+        }
 
-					$response = null;
-					$return = new PostController();
-					$return -> fncResponse($response, "Wrong password",$suffix);
+        $return = new PostController();
+        $return->fncResponse(null, "Token generation failed", $suffix);
+        return;
 
-				}
+    }
 
-			}else{
+    $return = new PostController();
+    $return->fncResponse(null, "Wrong email or password", $suffix);
+}
 
-				/*=============================================
-				Actualizamos el token para usuarios logueados desde app externas
-				=============================================*/
-
-				$token = Connection::jwt($response[0]->{"id_".$suffix}, $response[0]->{"email_".$suffix});
-
-				$jwt = JWT::encode($token, $_ENV["JWT_SECRET"], "HS256");				
-
-				$data = array(
-
-					"token_".$suffix => $jwt,
-					"token_exp_".$suffix => $token["exp"]
-
-				);
-
-				$update = PutModel::putData($table, $data, $response[0]->{"id_".$suffix}, "id_".$suffix);
-
-				if(isset($update["comment"]) && $update["comment"] == "The process was successful" ){
-
-					$response[0]->{"token_".$suffix} = $jwt;
-					$response[0]->{"token_exp_".$suffix} = $token["exp"];
-
-					$return = new PostController();
-					$return -> fncResponse($response, null,$suffix);
-
-				}
-
-			}
-
-		}else{
-
-			$response = null;
-			$return = new PostController();
-			$return -> fncResponse($response, "Wrong email",$suffix);
-
-		}
-
-
-	}
-
+	
 	/*=============================================
 	Respuestas del controlador
 	=============================================*/
