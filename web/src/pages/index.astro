@@ -1,6 +1,45 @@
-
 ---
 import Layout from "../layouts/Layout.astro";
+
+import { getTable } from "../services/pages";
+import { decode } from "../services/utils";
+
+
+
+// Recuperar las noticias desde el CMS
+const noticiasCMS = await getTable("noticias");
+
+// Estructura de las noticias
+type NewsItem = {
+  category: string;
+  title: string;
+  description: string;
+  image: string;
+  url: string;
+};
+
+// Seleccionar las 3 noticias publicadas y destacadas más recientes
+const news: NewsItem[] = noticiasCMS
+  .filter((noticia: any) =>
+    noticia.status_noticia === "Publicada" &&
+    noticia.destacada_noticia === "Si" &&
+    noticia.slug_noticia
+  )
+  .sort((a: any, b: any) =>
+    (b.date_created_noticia ?? "").localeCompare(
+      a.date_created_noticia ?? ""
+    )
+  )
+  .slice(0, 3)
+  .map((noticia: any) => ({
+    category: decode(noticia.subtitle_noticia ?? ""),
+    title: decode(noticia.title_noticia ?? ""),
+    description: decode(noticia.description_noticia ?? ""),
+    image: decode(noticia.image_noticia ?? ""),
+    url: `/noticias/${decode(noticia.slug_noticia)}`
+  }));
+
+
 
 const matches = [
   {
@@ -23,27 +62,6 @@ const matches = [
     home: "CTM SAN JUAN",
     away: "Equipo visitante",
     location: "San Juan de Aznalfarache"
-  }
-];
-
-const news = [
-  {
-    category: "Actualidad del club",
-    title: "Bienvenidos a la nueva web del CTM San Juan",
-    description: "Un nuevo espacio para seguir toda la actualidad, los partidos y los resultados de nuestro club.",
-    image: "/images/tenis-mesa-1.jpg"
-  },
-  {
-    category: "Competición",
-    title: "Preparados para una nueva temporada",
-    description: "Seguimos trabajando y entrenando para afrontar los nuevos retos deportivos.",
-    image: "/images/tenis-mesa-2.jpg"
-  },
-  {
-    category: "El club",
-    title: "Deporte, esfuerzo y compañerismo",
-    description: "El tenis de mesa es mucho más que competir. Es aprender, compartir y disfrutar.",
-    image: "/images/tenis-mesa-3.jpg"
   }
 ];
 ---
@@ -200,12 +218,14 @@ const news = [
         {news.map((item) => (
           <article class="news-card">
 
+            {item.image && (
             <img
               src={item.image}
               alt={item.title}
               class="news-image"
               loading="lazy"
             />
+          )}
 
             <div class="news-content">
 
@@ -221,7 +241,7 @@ const news = [
                 {item.description}
               </p>
 
-              <a href="/noticias" class="news-more">
+              <a href={item.url} class="news-more">
                 Más información →
               </a>
 

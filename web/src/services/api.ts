@@ -1,6 +1,10 @@
 const API_URL = import.meta.env.API_URL;
 const API_KEY = import.meta.env.API_KEY;
 
+if (!API_URL) {
+  throw new Error("Falta configurar API_URL en el archivo .env");
+}
+
 export async function api(
   endpoint: string,
   method: string = "GET",

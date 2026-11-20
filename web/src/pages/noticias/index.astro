@@ -1,0 +1,172 @@
+
+---
+import Layout from "../../layouts/Layout.astro";
+
+import { getTable } from "../../services/pages";
+import { decode } from "../../services/utils";
+
+type Noticia = {
+  id_noticia: number;
+  title_noticia: string;
+  subtitle_noticia: string;
+  description_noticia: string;
+  image_noticia: string;
+  slug_noticia: string;
+  destacada_noticia: string;
+  status_noticia: string;
+  date_created_noticia: string;
+};
+
+// Recuperar todas las noticias del CMS
+const noticias = await getTable("noticias");
+
+// Mostrar únicamente las noticias publicadas
+const news: Noticia[] = noticias
+  .filter((noticia: Noticia) =>
+    noticia.status_noticia === "Publicada" &&
+    noticia.slug_noticia
+  )
+  .sort((a: Noticia, b: Noticia) =>
+    b.date_created_noticia.localeCompare(a.date_created_noticia)
+  );
+---
+
+<Layout
+  title="Noticias | CTM San Juan"
+  description="Últimas noticias y actualidad del Club de Tenis de Mesa San Juan."
+>
+
+  <section class="section news-page">
+
+    <div class="container">
+
+      <div class="news-page-header">
+
+        <span class="eyebrow">Actualidad del club</span>
+
+        <h1 class="section-title">
+          Noticias del CTM San Juan
+        </h1>
+
+        <p class="section-description">
+          Descubre las últimas noticias, novedades y actividades
+          de nuestro club.
+        </p>
+
+      </div>
+
+      {news.length > 0 ? (
+
+        <div class="news-grid">
+
+          {news.map((item) => (
+
+            <article class="news-card">
+
+              {item.image_noticia && (
+                <img
+                  src={decode(item.image_noticia)}
+                  alt={decode(item.title_noticia)}
+                  class="news-image"
+                  loading="lazy"
+                />
+              )}
+
+              <div class="news-content">
+
+                <span class="news-category">
+                  {decode(item.subtitle_noticia)}
+                </span>
+
+                <h2 class="news-title">
+                  {decode(item.title_noticia)}
+                </h2>
+
+                <p class="news-description">
+                  {decode(item.description_noticia)}
+                </p>
+
+                <a
+                  href={`/noticias/${decode(item.slug_noticia)}`}
+                  class="news-more"
+                >
+                  Leer noticia →
+                </a>
+
+              </div>
+
+            </article>
+
+          ))}
+
+        </div>
+
+      ) : (
+
+        <p class="no-news">
+          Actualmente no hay noticias disponibles.
+        </p>
+
+      )}
+
+      <div class="news-back">
+        <a href="/" class="btn btn-primary">
+          ← Volver al inicio
+        </a>
+      </div>
+
+    </div>
+
+  </section>
+
+</Layout>
+
+<style>
+  .news-page {
+    padding-top: 75px;
+    padding-bottom: 90px;
+  }
+
+  .news-page-header {
+    max-width: 750px;
+    margin: 0 auto 50px;
+    text-align: center;
+  }
+
+  .news-page-header .section-title {
+    margin: 15px 0;
+  }
+
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px;
+  }
+
+  .news-back {
+    margin-top: 55px;
+    text-align: center;
+  }
+
+  .no-news {
+    text-align: center;
+    padding: 50px 0;
+    color: #64748b;
+  }
+
+  @media (max-width: 900px) {
+    .news-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 600px) {
+    .news-page {
+      padding-top: 45px;
+    }
+
+    .news-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
