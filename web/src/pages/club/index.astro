@@ -1,0 +1,201 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getTable } from "../../services/pages";
+import { decode } from "../../services/utils";
+import "../../styles/club.css";
+
+// Recuperar los datos del club desde CMS Builder
+const clubsCMS = await getTable("clubs");
+const club = clubsCMS[0] ?? {};
+
+// Textos e imágenes
+const title = decode(club.title_club || "MUCHO MÁS QUE UN CLUB");
+const subtitle = decode(club.subtitle_club || "");
+const description = decode(club.description_club || "");
+const history = decode(club.history_club || "");
+const values = decode(club.values_club || "");
+const objectives = decode(club.objectives_club || "");
+
+const image = decode(club.image_club || "");
+const historyImage = decode(club.image_secondary_club || "");
+
+// Separar párrafos respetando los saltos de línea del CMS
+const paragraphs = (text: string): string[] =>
+  text.split(/\r?\n\s*\r?\n/).map((p) => p.trim()).filter(Boolean);
+
+// Convertir valores y objetivos en bloques con título
+const structuredItems = (text: string) => {
+  const blocks = paragraphs(text);
+  const intro = blocks[0] ?? "";
+
+  const items = blocks.slice(1).map((block) => {
+    const separator = block.indexOf(":");
+
+    return separator > -1
+      ? {
+          heading: block.slice(0, separator).trim(),
+          body: block.slice(separator + 1).trim()
+        }
+      : {
+          heading: "",
+          body: block
+        };
+  });
+
+  return { intro, items };
+};
+
+const valuesContent = structuredItems(values);
+const objectivesContent = structuredItems(objectives);
+---
+
+<Layout
+  title={`${title} | CTM San Juan`}
+  description={subtitle || "Conoce la historia, los valores y los objetivos del CTM San Juan."}
+>
+
+  <!-- CABECERA -->
+
+  <section class="club-hero">
+    <div class="container">
+      <span class="club-hero-label">CTM SAN JUAN · EL CLUB</span>
+      <h1>{title}</h1>
+      <p>{subtitle}</p>
+    </div>
+  </section>
+
+  <!-- PRESENTACIÓN -->
+
+  <section class="section">
+    <div class="container club-two-columns">
+
+      <div class="club-copy">
+        <span class="eyebrow">Nuestra identidad</span>
+        <h2 class="section-title">QUIÉNES SOMOS</h2>
+
+        <div class="club-paragraphs">
+          {paragraphs(description).map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </div>
+      </div>
+
+      {image && (
+        <div class="club-photo-wrap">
+          <img
+            src={image}
+            alt="Jugadores del Club de Tenis de Mesa San Juan"
+            class="club-photo"
+          />
+        </div>
+      )}
+
+    </div>
+  </section>
+
+  <!-- HISTORIA -->
+
+  <section class="section club-history">
+    <div class="container">
+
+      <div class="club-section-heading">
+        <span class="eyebrow">Nuestra trayectoria</span>
+        <h2 class="section-title">NUESTRA HISTORIA</h2>
+      </div>
+
+      <div class="club-history-layout">
+
+        {historyImage && (
+          <div class="club-photo-wrap">
+            <img
+              src={historyImage}
+              alt="Fotografía histórica del equipo CTM San Juan"
+              class="club-photo"
+              loading="lazy"
+            />
+            <span class="club-photo-caption">
+              Un recuerdo de nuestra trayectoria deportiva.
+            </span>
+          </div>
+        )}
+
+        <div class="club-paragraphs">
+          {paragraphs(history).map((paragraph) =>
+            paragraph === "Una etapa destacada de nuestra historia" ||
+            paragraph === "Actualidad y éxitos deportivos recientes" ? (
+              <h3 class="club-history-subtitle">{paragraph}</h3>
+            ) : (
+              <p>{paragraph}</p>
+            )
+          )}
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- VALORES -->
+
+  <section class="section">
+    <div class="container">
+
+      <div class="club-section-heading">
+        <span class="eyebrow">Lo que nos define</span>
+        <h2 class="section-title">NUESTROS VALORES</h2>
+        <p class="section-description">{valuesContent.intro}</p>
+      </div>
+
+      <div class="club-card-grid">
+        {valuesContent.items.map((item, index) => (
+          <article class="club-info-card">
+            <span class="club-card-number">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            {item.heading && <h3>{item.heading}</h3>}
+            <p>{item.body}</p>
+          </article>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- OBJETIVOS -->
+
+  <section class="section club-objectives">
+    <div class="container">
+
+      <div class="club-section-heading">
+        <span class="eyebrow">Mirando al futuro</span>
+        <h2 class="section-title">NUESTROS OBJETIVOS</h2>
+        <p class="section-description">{objectivesContent.intro}</p>
+      </div>
+
+      <div class="club-card-grid">
+        {objectivesContent.items.map((item, index) => (
+          <article class="club-info-card">
+            <span class="club-card-number">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            {item.heading && <h3>{item.heading}</h3>}
+            <p>{item.body}</p>
+          </article>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CIERRE -->
+
+  <section class="club-closing">
+    <div class="container">
+      <span>CLUB DE TENIS DE MESA SAN JUAN</span>
+      <h2>UNA PASIÓN QUE NOS UNE.</h2>
+      <p>San Juan de Aznalfarache · Sevilla</p>
+    </div>
+  </section>
+
+</Layout>
+
+

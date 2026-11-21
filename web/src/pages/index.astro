@@ -1,13 +1,37 @@
+
 ---
 import Layout from "../layouts/Layout.astro";
 
 import { getTable } from "../services/pages";
 import { decode } from "../services/utils";
 
-
-
 // Recuperar las noticias desde el CMS
 const noticiasCMS = await getTable("noticias");
+
+// Recuperar los datos de la portada desde el CMS
+const inicioCMS = await getTable("inicios");
+const inicio = inicioCMS[0] ?? {};
+
+// Contenidos de la portada con valores de respaldo
+const heroTitle = decode(
+  inicio.title_inicio || "PASIÓN POR EL TENIS DE MESA"
+);
+
+const heroSubtitle = decode(
+  inicio.subtitle_inicio || "Club de Tenis de Mesa · Sevilla"
+);
+
+const heroDescription = decode(
+  inicio.description_inicio ||
+  "Bienvenidos al Club de Tenis de Mesa San Juan. Un club donde el esfuerzo, la competición y el compañerismo se encuentran alrededor de una mesa."
+);
+
+const heroImage = decode(
+  inicio.image_inicio || "/images/portada-ctm-san-juan.avif"
+);
+
+// Mantener EL TENIS destacado en amarillo
+const titleParts = heroTitle.split(/(EL TENIS)/i);
 
 // Estructura de las noticias
 type NewsItem = {
@@ -38,8 +62,6 @@ const news: NewsItem[] = noticiasCMS
     image: decode(noticia.image_noticia ?? ""),
     url: `/noticias/${decode(noticia.slug_noticia)}`
   }));
-
-
 
 const matches = [
   {
@@ -73,23 +95,28 @@ const matches = [
 
   <!-- PORTADA -->
 
-  <section class="hero">
+  <section
+    class="hero"
+    style={`--hero-image: url("${heroImage.replace(/["\\\r\n]/g, "")}")`}
+  >
     <div class="hero-content">
 
       <span class="hero-label">
-        Club de Tenis de Mesa · Sevilla
+        {heroSubtitle}
       </span>
 
       <h1>
-        PASIÓN POR
-        <span>EL TENIS</span>
-        DE MESA
+        {titleParts.map((part) =>
+          part.toUpperCase() === "EL TENIS" ? (
+            <span>{part}</span>
+          ) : (
+            part
+          )
+        )}
       </h1>
 
       <p class="hero-description">
-        Bienvenidos al Club de Tenis de Mesa San Juan.
-        Un club donde el esfuerzo, la competición y el compañerismo
-        se encuentran alrededor de una mesa.
+        {heroDescription}
       </p>
 
       <div class="hero-actions">
@@ -219,13 +246,13 @@ const matches = [
           <article class="news-card">
 
             {item.image && (
-            <img
-              src={item.image}
-              alt={item.title}
-              class="news-image"
-              loading="lazy"
-            />
-          )}
+              <img
+                src={item.image}
+                alt={item.title}
+                class="news-image"
+                loading="lazy"
+              />
+            )}
 
             <div class="news-content">
 

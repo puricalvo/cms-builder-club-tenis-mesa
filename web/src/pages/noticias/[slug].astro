@@ -1,9 +1,9 @@
-
 ---
 import Layout from "../../layouts/Layout.astro";
 
 import { getTable } from "../../services/pages";
 import { decode } from "../../services/utils";
+import "../../styles/noticia-detalle.css";
 
 type Noticia = {
   id_noticia: number;
@@ -104,69 +104,3 @@ const image = decode(noticia.image_noticia ?? "");
 
 </Layout>
 
-<style>
-  .article-section {
-    padding-top: 65px;
-    padding-bottom: 80px;
-  }
-
-  .news-article {
-    max-width: 950px;
-    margin: 0 auto;
-  }
-
-  .back-link {
-    display: inline-block;
-    margin-bottom: 35px;
-  }
-
-  .article-header {
-    margin-bottom: 35px;
-  }
-
-  .article-title {
-    font-family: "Barlow Condensed", sans-serif;
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 800;
-    line-height: 1.05;
-    color: var(--navy, #102B50);
-    margin: 15px 0;
-  }
-
-  .article-subtitle {
-    font-size: 1.2rem;
-    color: #64748b;
-    line-height: 1.6;
-  }
-
-  .article-image {
-    width: 100%;
-    max-height: 520px;
-    object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 40px;
-  }
-
-  .article-description {
-    font-size: 1.08rem;
-    line-height: 1.9;
-    color: #334155;
-    overflow-wrap: anywhere;
-  }
-
-  .article-footer {
-    margin-top: 50px;
-    padding-top: 25px;
-    border-top: 1px solid #e2e8f0;
-  }
-
-  @media (max-width: 768px) {
-    .article-section {
-      padding-top: 35px;
-    }
-
-    .article-image {
-      margin-bottom: 25px;
-    }
-  }
-</style>

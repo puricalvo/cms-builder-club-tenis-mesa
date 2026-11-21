@@ -1,0 +1,245 @@
+
+/* =========================================
+   CTM SAN JUAN
+   Página: El club
+========================================= */
+
+/* CABECERA */
+
+.club-hero {
+  position: relative;
+  padding: 105px 0 110px;
+  background:
+    radial-gradient(circle at 85% 30%, rgba(23, 77, 131, .45), transparent 40%),
+    var(--navy-dark);
+  color: var(--white);
+  border-bottom: 7px solid var(--yellow);
+}
+
+.club-hero-label {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: var(--yellow);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.club-hero h1 {
+  max-width: 850px;
+  font-family: var(--font-heading);
+  font-size: clamp(52px, 8vw, 96px);
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.club-hero p {
+  max-width: 650px;
+  margin-top: 22px;
+  color: rgba(255, 255, 255, .8);
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+/* PRESENTACIÓN E HISTORIA */
+
+.club-two-columns,
+.club-history-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 65px;
+}
+
+.club-copy .section-title {
+  margin-bottom: 25px;
+}
+
+.club-paragraphs {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.club-photo-wrap {
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.club-photo {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.club-photo-caption {
+  display: block;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  font-style: italic;
+}
+
+.club-history {
+  background: var(--background);
+}
+
+.club-section-heading {
+  margin-bottom: 42px;
+}
+
+.club-section-heading .section-description {
+  max-width: 780px;
+  margin-top: 20px;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.club-history-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 35px;
+}
+
+.club-history-layout .club-photo-wrap {
+  width: 100%;
+  max-width: 650px;
+  margin-inline: auto;
+}
+
+.club-history-layout .club-photo {
+  width: 100%;
+  height: auto;
+}
+
+.club-history-layout .club-paragraphs {
+  width: 100%;
+}
+
+.club-history-subtitle {
+  margin-top: 14px;
+  color: var(--navy);
+  font-family: var(--font-heading);
+  font-size: 29px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+/* TARJETAS DE VALORES Y OBJETIVOS */
+
+.club-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.club-info-card {
+  padding: 30px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.club-card-number {
+  display: block;
+  margin-bottom: 14px;
+  color: var(--yellow-dark);
+  font-family: var(--font-heading);
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.club-info-card h3 {
+  margin-bottom: 10px;
+  color: var(--navy);
+  font-family: var(--font-heading);
+  font-size: 25px;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.club-info-card p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.club-objectives {
+  background: var(--blue-light);
+}
+
+/* CIERRE */
+
+.club-closing {
+  padding: 80px 0;
+  background: var(--navy);
+  color: var(--white);
+  text-align: center;
+}
+
+.club-closing span {
+  color: var(--yellow);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.club-closing h2 {
+  margin-top: 15px;
+  font-family: var(--font-heading);
+  font-size: clamp(40px, 6vw, 65px);
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.club-closing p {
+  margin-top: 16px;
+  color: rgba(255, 255, 255, .7);
+  font-size: 14px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 850px) {
+  .club-two-columns,
+  .club-history-layout {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .club-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .club-hero {
+    padding: 80px 0;
+  }
+
+  .club-hero p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .club-hero {
+    padding: 65px 0;
+  }
+
+  .club-info-card {
+    padding: 24px;
+  }
+
+  .club-closing {
+    padding: 65px 0;
+  }
+}

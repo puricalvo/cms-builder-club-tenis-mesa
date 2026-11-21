@@ -315,7 +315,7 @@ img {
   background:
     linear-gradient(90deg, rgba(5, 20, 39, .97) 0%, rgba(8, 32, 59, .85) 48%, rgba(8, 32, 59, .30) 100%),
     linear-gradient(0deg, rgba(8, 25, 46, .35), rgba(8, 25, 46, .35)),
-    url("https://images.unsplash.com/photo-1611251135345-18c56206b863?auto=format&fit=crop&w=2000&q=85")
+    var(--hero-image, url("/images/portada-ctm-san-juan.avif"))
     center 45% / cover no-repeat;
 }
 
