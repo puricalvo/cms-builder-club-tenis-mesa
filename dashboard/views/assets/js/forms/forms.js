@@ -71,6 +71,7 @@ if ($(".timepicker").length > 0) {
   $(".timepicker").datetimepicker({
     datepicker: false,
     format: "H:i",
+    step: 15,
   });
 }
 

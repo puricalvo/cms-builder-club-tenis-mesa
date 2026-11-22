@@ -10,6 +10,8 @@ class DynamicController{
 
 		if(isset($_POST["module"])){
 
+		
+
 			/* echo '<script>
 
 				fncMatPreloader("on");
@@ -104,7 +106,7 @@ class DynamicController{
 
 					}else{
 					
-						$fields[$value->title_column] = urlencode(trim($_POST[$value->title_column]));
+						$fields[$value->title_column] = trim($_POST[$value->title_column]);
 
 					}
 					

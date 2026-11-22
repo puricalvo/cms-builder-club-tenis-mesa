@@ -1,0 +1,358 @@
+
+/* =========================================
+   CTM SAN JUAN
+   Página: Calendario deportivo
+========================================= */
+
+/* CABECERA */
+
+.calendar-section {
+  padding: 45px 0 80px;
+}
+
+.calendar-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.calendar-title {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--navy, #102B50);
+  margin: 15px 0;
+}
+
+.calendar-subtitle {
+  font-size: 1.1rem;
+  color: #64748b;
+  max-width: 650px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* DISTRIBUCIÓN PRINCIPAL */
+
+.calendar-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr);
+  gap: 30px;
+  align-items: start;
+}
+
+/* TARJETAS */
+
+.calendar-card,
+.calendar-events-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 8px 30px rgba(16, 43, 80, 0.06);
+  min-width: 0;
+}
+
+/* NAVEGACIÓN DEL MES */
+
+.calendar-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.calendar-month-title {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--navy, #102B50);
+  text-transform: capitalize;
+}
+
+.calendar-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.calendar-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #102B50;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.calendar-nav-btn:hover {
+  background: #F5C928;
+}
+
+/* CUADRÍCULA */
+
+.calendar-weekdays,
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.calendar-weekdays {
+  margin-bottom: 12px;
+}
+
+.calendar-weekday {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #64748b;
+  padding: 10px 0;
+}
+
+.calendar-day {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 64px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #102B50;
+  font-size: 0.95rem;
+}
+
+.calendar-day.empty {
+  border: none;
+  background: transparent;
+}
+
+.calendar-day.today {
+  border-color: #102B50;
+  font-weight: 800;
+}
+
+.calendar-day.has-event {
+  background: #fff8d9;
+  border-color: #F5C928;
+  font-weight: 800;
+}
+
+/* DÍA SELECCIONADO */
+
+.calendar-day.selected,
+.calendar-day.has-event.selected {
+  background: #102B50;
+  border-color: #102B50;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.calendar-day.selected::after {
+  background: #F5C928;
+}
+
+button.calendar-day.selected:hover {
+  background: #173d70;
+}
+
+.calendar-day.has-event::after {
+  content: "";
+  position: absolute;
+  bottom: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d4a900;
+}
+
+button.calendar-day {
+  width: 100%;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+button.calendar-day:hover {
+  background: #F5C928;
+  transform: translateY(-2px);
+}
+
+button.calendar-day:focus-visible,
+.calendar-nav-btn:focus-visible {
+  outline: 3px solid #102B50;
+  outline-offset: 3px;
+}
+
+/* LISTA DE EVENTOS */
+
+.calendar-events-title {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #102B50;
+  margin-bottom: 25px;
+}
+
+.calendar-event {
+  padding: 18px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.calendar-event:last-child {
+  border-bottom: none;
+}
+
+.calendar-event-type {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: #fff4bd;
+  color: #102B50;
+  font-size: 0.75rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.calendar-event-category {
+  display: block;
+  width: fit-content;
+  margin-bottom: 10px;
+  color: #102B50;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.calendar-event-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #102B50;
+  margin-bottom: 10px;
+}
+
+.calendar-event-meta {
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.8;
+}
+
+.calendar-empty {
+  color: #64748b;
+  line-height: 1.7;
+}
+
+.calendar-events-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.calendar-reset-btn {
+  background: transparent;
+  border: 1px solid #F5C928;
+  color: #102B50;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar-reset-btn:hover {
+  background: #F5C928;
+  color: #102B50;
+}
+
+.calendar-reset-btn:focus-visible {
+  outline: 2px solid #F5C928;
+  outline-offset: 3px;
+}
+
+.calendar-reset-btn[hidden] {
+  display: none;
+}
+
+/* ESTADOS DE LOS EVENTOS */
+
+.calendar-event-status {
+  display: inline-block;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.calendar-event-status.programado {
+  background: #e8f1ff;
+  color: #174a91;
+}
+
+.calendar-event-status.aplazado {
+  background: #fff0d6;
+  color: #9a4d00;
+}
+
+.calendar-event-status.cancelado {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.calendar-event-status.finalizado {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .calendar-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .calendar-section {
+    padding: 45px 0 65px;
+  }
+
+  .calendar-header {
+    margin-bottom: 30px;
+  }
+
+  .calendar-card,
+  .calendar-events-card {
+    padding: 16px;
+  }
+
+  .calendar-month-title {
+    font-size: 1.45rem;
+  }
+
+  .calendar-weekdays,
+  .calendar-days {
+    gap: 4px;
+  }
+
+  .calendar-day {
+    min-height: 44px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .calendar-nav-btn,
+  button.calendar-day {
+    transition: none;
+  }
+}
