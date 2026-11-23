@@ -313,6 +313,16 @@ button.calendar-day:focus-visible,
   color: #166534;
 }
 
+/* Separación del VS entre equipos */
+
+.calendar-event-title .match-vs {
+  display: inline-block;
+  margin: 0 8px;
+  color: #e0ad00;
+  font-weight: 800;
+  transform: translateY(4px);
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 900px) {

@@ -14,6 +14,7 @@ type Evento = {
   category: string;
   location: string;
   opponent: string;
+  homeAway: string;
   status: string;
 };
 
@@ -22,17 +23,36 @@ const registros = await getTable("calendarios");
 
 // Preparar los datos
 const eventos: Evento[] = registros
-  .map((registro: any): Evento => ({
-    title: decode(registro.title_calendario ?? ""),
-    description: decode(registro.description_calendario ?? ""),
-    date: String(registro.date_calendario ?? "").slice(0, 10),
-    time: String(registro.time_calendario ?? "").slice(0, 5),
-    type: decode(registro.type_calendario ?? ""),
-    category: decode(registro.category_calendario ?? ""),
-    location: decode(registro.location_calendario ?? ""),
-    opponent: decode(registro.opponent_calendario ?? ""),
-    status: decode(registro.status_calendario ?? "")
-  }))
+  .map((registro: any): Evento => {
+    const type = decode(registro.type_calendario ?? "");
+    const opponent = decode(registro.opponent_calendario ?? "");
+    const homeAway = decode(registro.home_away_calendario ?? "");
+
+    const esPartido = type.trim().toLowerCase() === "partido";
+    const esVisitante = homeAway.trim().toLowerCase() === "visitante";
+
+    const titleOriginal = decode(registro.title_calendario ?? "");
+
+    const title =
+      esPartido && opponent
+        ? esVisitante
+          ? `${opponent} vs CTM San Juan`
+          : `CTM San Juan vs ${opponent}`
+        : titleOriginal;
+
+    return {
+      title,
+      description: decode(registro.description_calendario ?? ""),
+      date: String(registro.date_calendario ?? "").slice(0, 10),
+      time: String(registro.time_calendario ?? "").slice(0, 5),
+      type,
+      category: decode(registro.category_calendario ?? ""),
+      location: decode(registro.location_calendario ?? ""),
+      opponent,
+      homeAway,
+      status: decode(registro.status_calendario ?? "")
+    };
+  })
   .filter((evento: Evento) => Boolean(evento.date && evento.title))
   .sort((a: Evento, b: Evento) => a.date.localeCompare(b.date));
 
@@ -163,7 +183,21 @@ const formatDate = (date: string) => {
                     </span>
 
                     <h3 class="calendar-event-title">
-                      {evento.title}
+                      {evento.type.trim().toLowerCase() === "partido" && evento.opponent ? (
+                        <>
+                          {evento.homeAway.trim().toLowerCase() === "visitante"
+                            ? evento.opponent
+                            : "CTM San Juan"}
+
+                          <span class="match-vs">VS</span>
+
+                          {evento.homeAway.trim().toLowerCase() === "visitante"
+                            ? "CTM San Juan"
+                            : evento.opponent}
+                        </>
+                      ) : (
+                        evento.title
+                      )}
                     </h3>
 
                     {evento.category && (
@@ -212,6 +246,7 @@ const formatDate = (date: string) => {
     category: string;
     location: string;
     opponent: string;
+    homeAway: string;
     status: string;
   };
 
@@ -277,7 +312,34 @@ const filterEventsByDate = (selectedDate: string) => {
 
     const title = document.createElement("h3");
     title.className = "calendar-event-title";
-    title.textContent = evento.title;
+
+    const esPartido =
+      evento.type.trim().toLowerCase() === "partido";
+
+    const esVisitante =
+      evento.homeAway?.trim().toLowerCase() === "visitante";
+
+    if (esPartido && evento.opponent) {
+      const equipoLocal = esVisitante
+        ? evento.opponent
+        : "CTM San Juan";
+
+      const equipoVisitante = esVisitante
+        ? "CTM San Juan"
+        : evento.opponent;
+
+      const vs = document.createElement("span");
+      vs.className = "match-vs";
+      vs.textContent = "VS";
+
+      title.append(
+        document.createTextNode(equipoLocal),
+        vs,
+        document.createTextNode(equipoVisitante)
+      );
+    } else {
+      title.textContent = evento.title;
+    }
 
     const meta = document.createElement("div");
     meta.className = "calendar-event-meta";
@@ -292,7 +354,6 @@ const filterEventsByDate = (selectedDate: string) => {
 
     addDetail("🕒", evento.time ? `${evento.time} h` : "");
     addDetail("📍", evento.location);
-    addDetail("🏓 Rival:", evento.opponent);
     if (evento.status) {
         const statusRow = document.createElement("p");
         statusRow.textContent = "Estado: ";

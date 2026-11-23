@@ -19,6 +19,19 @@ const objectives = decode(club.objectives_club || "");
 const image = decode(club.image_club || "");
 const historyImage = decode(club.image_secondary_club || "");
 
+// Contenidos del banner de cierre desde CMS Builder
+const bannerEyebrow = decode(
+  club.banner_eyebrow_club || "CLUB DE TENIS DE MESA SAN JUAN"
+);
+
+const bannerTitle = decode(
+  club.banner_title_club || "UNA PASIÓN QUE NOS UNE."
+);
+
+const bannerSubtitle = decode(
+  club.banner_subtitle_club || "San Juan de Aznalfarache · Sevilla"
+);
+
 // Separar párrafos respetando los saltos de línea del CMS
 const paragraphs = (text: string): string[] =>
   text.split(/\r?\n\s*\r?\n/).map((p) => p.trim()).filter(Boolean);
@@ -190,9 +203,9 @@ const objectivesContent = structuredItems(objectives);
 
   <section class="club-closing">
     <div class="container">
-      <span>CLUB DE TENIS DE MESA SAN JUAN</span>
-      <h2>UNA PASIÓN QUE NOS UNE.</h2>
-      <p>San Juan de Aznalfarache · Sevilla</p>
+      <span>{bannerEyebrow}</span>
+      <h2>{bannerTitle}</h2>
+      <p>{bannerSubtitle}</p>
     </div>
   </section>
 

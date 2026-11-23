@@ -1,0 +1,96 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getTable } from "../../services/pages";
+import { decode } from "../../services/utils";
+
+import "../../styles/resultados.css";
+
+// Recuperar los partidos desde el CMS Builder
+const registros = await getTable("calendarios");
+
+// Preparar los resultados de partidos finalizados
+const resultados = registros
+  .map((registro: any) => ({
+    title: decode(registro.title_calendario ?? ""),
+    date: String(registro.date_calendario ?? "").slice(0, 10),
+    category: decode(registro.category_calendario ?? ""),
+    opponent: decode(registro.opponent_calendario ?? ""),
+    location: decode(registro.location_calendario ?? ""),
+    homeAway: decode(registro.home_away_calendario ?? ""),
+    type: decode(registro.type_calendario ?? ""),
+    status: decode(registro.status_calendario ?? ""),
+    scoreHome: registro.score_home_calendario,
+    scoreAway: registro.score_away_calendario
+  }))
+  .filter((partido: any) =>
+    partido.type.trim().toLowerCase() === "partido" &&
+    partido.status.trim().toLowerCase() === "finalizado"
+  )
+  .sort((a: any, b: any) => b.date.localeCompare(a.date));
+---
+
+<Layout title="Resultados | CTM San Juan">
+  <section class="section results-section">
+    <div class="container">
+      <header>
+        <span class="eyebrow">Competición</span>
+        <h1>Resultados</h1>
+        <p>Consulta los resultados de nuestros equipos.</p>
+      </header>
+
+        <div class="results-grid">
+            {resultados.length === 0 ? (
+                <p>Todavía no hay resultados disponibles.</p>
+            ) : (
+                resultados.map((partido: any) => {
+                const esVisitante =
+                    partido.homeAway.trim().toLowerCase() === "visitante";
+
+                const equipoLocal = esVisitante
+                    ? partido.opponent
+                    : "CTM SAN JUAN";
+
+                const equipoVisitante = esVisitante
+                    ? "CTM SAN JUAN"
+                    : partido.opponent;
+
+                return (
+                    <article class="result-card">
+
+                    <div class="result-card-header">
+                        <span>{partido.category}</span>
+                        <span>Finalizado</span>
+                    </div>
+
+                    <p class="result-date">
+                        {partido.date.split("-").reverse().join("/")}
+                    </p>
+
+                    <div class="result-teams">
+                        <div class="result-team">
+                        <strong>{equipoLocal}</strong>
+                        <small>LOCAL</small>
+                        </div>
+
+                        <div class="result-score">
+                        <strong>{partido.scoreHome} - {partido.scoreAway}</strong>
+                        </div>
+
+                        <div class="result-team">
+                        <strong>{equipoVisitante}</strong>
+                        <small>VISITANTE</small>
+                        </div>
+                    </div>
+
+                    <p class="result-location">
+                        📍 {partido.location}
+                    </p>
+
+                    </article>
+                );
+                })
+            )}
+        </div>
+    </div>
+  </section>
+</Layout>
