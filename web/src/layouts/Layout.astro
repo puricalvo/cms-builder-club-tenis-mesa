@@ -2,6 +2,8 @@
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import BackToTop from "../components/ui/BackToTop.astro";
+import { getTable } from "../services/pages";
+
 import "../styles/global.css";
 
 interface Props {
@@ -13,6 +15,25 @@ const {
   title = "CTM San Juan | Club de Tenis de Mesa",
   description = "Club de Tenis de Mesa de San Juan de Aznalfarache. Competición, deporte y pasión por el tenis de mesa."
 } = Astro.props;
+
+// Recuperar la configuración general del club
+const configuracionesCMS = await getTable("configuraciones");
+const configuracion = configuracionesCMS[0] ?? {};
+
+// Recuperar el color principal
+const colorPrincipal = configuracion.primary_color_configuracion || "#091D36";
+
+// Escudo del club desde CMS Builder, con imagen local de respaldo
+const escudoClub =
+  configuracion.logo_configuracion || "/images/escudo-club.png";
+
+// Nombre del club desde CMS Builder
+const nombreClub =
+  configuracion.name_configuracion || "CTM San Juan";
+
+// Localidad del club desde CMS Builder
+const localidadClub =
+  configuracion.city_configuracion || "SAN JUAN DE AZNALFARACHE";
 ---
 
 <!doctype html>
@@ -36,8 +57,12 @@ const {
     />
   </head>
 
-  <body>
-    <Header />
+  <body style={`--color-club-primary: ${colorPrincipal};`}>
+    <Header
+      escudoClub={escudoClub}
+      nombreClub={nombreClub}
+      localidadClub={localidadClub}
+    />
 
     <main>
       <slot />

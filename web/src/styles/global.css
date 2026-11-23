@@ -72,7 +72,7 @@ img {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--navy-dark);
+  background: var(--color-club-primary, var(--navy-dark));
   border-bottom: 1px solid rgba(255, 255, 255, 0.09);
 }
 

@@ -1,4 +1,16 @@
 ---
+interface Props {
+  escudoClub?: string;
+  nombreClub?: string;
+  localidadClub?: string;
+}
+
+const {
+  escudoClub = "/images/escudo-club.png",
+  nombreClub = "CTM San Juan",
+  localidadClub = "SAN JUAN DE AZNALFARACHE"
+} = Astro.props;
+
 const links = [
   { label: "Inicio", href: "/", id: "inicio" },
   { label: "El club", href: "/club", id: "club" },
@@ -15,14 +27,15 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
 
     <a href="/" class="brand" aria-label="CTM San Juan - Inicio">
       <img
-        src="/images/escudo-club.png"
+        src={escudoClub}
         alt="Escudo del Club de Tenis de Mesa San Juan"
         class="brand-logo"
+        onerror="this.onerror=null;this.src='/images/escudo-club.png';"
       />
 
       <span class="brand-text">
-        <strong>CTM SAN JUAN</strong>
-        <small>SAN JUAN DE AZNALFARACHE</small>
+        <strong>{nombreClub}</strong>
+        <small>{localidadClub}</small>
       </span>
     </a>
 
