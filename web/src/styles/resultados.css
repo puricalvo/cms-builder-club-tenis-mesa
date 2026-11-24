@@ -92,6 +92,28 @@
   padding-bottom: 65px;
 }
 
+/* Botón volver al inicio */
+.results-back {
+  margin-top: 35px;
+  text-align: center;
+}
+
+.results-back .evento-volver {
+  display: inline-block;
+  padding: 12px 20px;
+  background: var(--color-club-primary, #091d36);
+  color: white;
+  border-radius: 5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.results-back .evento-volver:hover {
+  background: #facc15;
+  color: #091d36;
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 900px) {

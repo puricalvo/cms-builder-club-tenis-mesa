@@ -683,8 +683,9 @@ img {
 
 .footer-links {
   display: flex;
-  flex-wrap: wrap;
-  gap: 13px 19px;
+  flex-wrap: nowrap;
+  gap: 10px;
+  white-space: nowrap;
 }
 
 .footer-links a {

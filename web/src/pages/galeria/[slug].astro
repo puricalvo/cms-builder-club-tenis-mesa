@@ -1,0 +1,162 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getPages, getTable } from "../../services/pages";
+import "../../styles/categoriaslug.css";
+
+// Generar las rutas de las páginas hijas de Galería
+export async function getStaticPaths() {
+  const paginas = await getPages();
+
+  const galeria = paginas.find(
+    (pagina: any) => pagina.url_page === "galeria"
+  );
+
+  if (!galeria) return [];
+
+  return paginas
+    .filter(
+      (pagina: any) =>
+        Number(pagina.parent_id_page) === Number(galeria.id_page)
+    )
+    .map((pagina: any) => ({
+      params: {
+        slug: pagina.url_page
+      },
+      props: {
+        pagina
+      }
+    }));
+}
+
+const { pagina } = Astro.props as {
+  pagina: {
+    id_page: number;
+    title_page: string;
+    url_page: string;
+    parent_id_page: number;
+  };
+};
+
+const modulos = await getTable("modules");
+
+const esTodosLosEventos = pagina.url_page === "todos-los-eventos";
+
+// Obtener las páginas hermanas dentro de Galería
+const paginas = await getPages();
+
+const paginasHermanas = paginas.filter(
+  (p: any) =>
+    Number(p.parent_id_page) === Number(pagina.parent_id_page) &&
+    Number(p.id_page) !== Number(pagina.id_page)
+);
+
+// Localizar los módulos de tabla de esas páginas
+const modulosGaleria = modulos.filter(
+  (modulo: any) =>
+    modulo.type_module === "tables" &&
+    paginasHermanas.some(
+      (p: any) =>
+        Number(p.id_page) === Number(modulo.id_page_module)
+    )
+);
+
+
+
+// Buscar el módulo de tabla de esta página hija
+const moduloTabla = modulos.find(
+  (modulo: any) =>
+    Number(modulo.id_page_module) === Number(pagina.id_page) &&
+    modulo.type_module === "tables"
+);
+
+// Obtener el nombre de la tabla y su sufijo desde el CMS
+const nombreTabla = moduloTabla?.title_module;
+const sufijoTabla = moduloTabla?.suffix_module;
+
+// Consultar automáticamente las fotografías
+const fotografias = esTodosLosEventos
+  ? (
+      await Promise.all(
+        modulosGaleria.map(async (modulo: any) => {
+          const registros = await getTable(modulo.title_module);
+          const sufijo = modulo.suffix_module;
+
+          const paginaEvento = paginasHermanas.find(
+            (p: any) =>
+                Number(p.id_page) === Number(modulo.id_page_module)
+          );
+
+          return registros.map((foto: any) => ({
+            titulo: foto[`titulo_${sufijo}`],
+            fecha: foto[`fecha_${sufijo}`],
+            imagen: foto[`imagen_${sufijo}`],
+            descripcion: foto[`descripcion_${sufijo}`],
+            orden: foto[`orden_${sufijo}`],
+            enlace: paginaEvento
+                ? `/galeria/${paginaEvento.url_page}`
+                : "#",
+          }));
+        })
+      )
+    ).flat()
+  : nombreTabla
+    ? await getTable(nombreTabla)
+    : [];
+
+---
+
+<Layout title={`${pagina.title_page} | CTM San Juan`}>
+
+  <section class="section galeria-evento">
+    <div class="container">
+
+      <h1>{pagina.title_page}</h1>
+
+        <div class="eventos-grid">
+            {fotografias.map((foto: any) => (
+                <article class="evento-card">
+                    {esTodosLosEventos ? (
+                        <a href={foto.enlace} class="galeria-enlace">
+                        <img
+                            src={foto.imagen}
+                            alt={foto.titulo}
+                            style="max-width: 400px; width: 100%; height: auto;"
+                        />
+                        </a>
+                    ) : (
+                        <img
+                        src={foto[`imagen_${sufijoTabla}`]}
+                        alt={foto[`titulo_${sufijoTabla}`]}
+                        style="max-width: 400px; width: 100%; height: auto;"
+                        />
+                    )}
+                    <h2>
+                    {esTodosLosEventos ? foto.titulo : foto[`titulo_${sufijoTabla}`]}
+                    </h2>
+                    <p class="evento-fecha">
+                        {new Date(
+                            esTodosLosEventos
+                            ? foto.fecha
+                            : foto[`fecha_${sufijoTabla}`]
+                        ).toLocaleDateString("es-ES", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                            timeZone: "UTC"
+                        })}
+                    </p>
+                    <p>
+                    {esTodosLosEventos ? foto.descripcion : foto[`descripcion_${sufijoTabla}`]}
+                    </p>
+                </article>
+            ))}
+
+        </div>
+      <a href="/galeria" class="evento-volver">
+        ← Volver a Galería
+      </a>
+
+    </div>
+  </section>
+
+</Layout>

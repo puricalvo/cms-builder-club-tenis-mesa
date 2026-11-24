@@ -36,15 +36,22 @@
 
 .calendar-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 30px;
   align-items: start;
 }
 
+/* Calendario mensual centrado */
+.calendar-layout > .calendar-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
 /* TARJETAS */
 
-.calendar-card,
-.calendar-events-card {
+.calendar-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 16px;
@@ -60,7 +67,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 15px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .calendar-month-title {
@@ -121,7 +128,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 64px;
+  min-height: 40px;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
   background: #f8fafc;
@@ -193,6 +200,12 @@ button.calendar-day:focus-visible,
 
 /* LISTA DE EVENTOS */
 
+#calendar-events {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
 .calendar-events-title {
   font-family: "Barlow Condensed", sans-serif;
   font-size: 1.8rem;
@@ -202,12 +215,11 @@ button.calendar-day:focus-visible,
 }
 
 .calendar-event {
-  padding: 18px 0;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.calendar-event:last-child {
-  border-bottom: none;
+  background: #ffffff;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(16, 43, 80, 0.06);
 }
 
 .calendar-event-type {
@@ -323,12 +335,38 @@ button.calendar-day:focus-visible,
   transform: translateY(4px);
 }
 
+/* Botón volver al inicio */
+.calendar-back {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.calendar-volver {
+  display: inline-block;
+  padding: 12px 20px;
+  background: var(--color-club-primary, #091d36);
+  color: white;
+  border-radius: 5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.calendar-volver:hover,
+.calendar-volver:focus-visible {
+  background: #ffcc00;
+  color: #091d36;
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 900px) {
   .calendar-layout {
     grid-template-columns: 1fr;
   }
+  #calendar-events {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 }
 
 @media (max-width: 600px) {
@@ -358,6 +396,10 @@ button.calendar-day:focus-visible,
     min-height: 44px;
     font-size: 0.85rem;
   }
+
+  #calendar-events {
+  grid-template-columns: 1fr;
+}
 }
 
 @media (prefers-reduced-motion: reduce) {

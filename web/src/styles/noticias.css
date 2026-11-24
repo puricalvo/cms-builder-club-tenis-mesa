@@ -46,6 +46,25 @@
   color: #64748b;
 }
 
+/* Botón volver al inicio */
+.noticia-volver {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: var(--color-club-primary, #091d36);
+  color: white;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.noticia-volver:hover {
+  background: #facc15;
+  color: #091d36;
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 900px) {

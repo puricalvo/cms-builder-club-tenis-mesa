@@ -1,0 +1,106 @@
+/* =========================================
+   GALERÍA - PÁGINAS DE EVENTOS
+========================================= */
+
+.galeria-evento {
+  padding: 50px 0;
+}
+
+.galeria-evento h1 {
+  margin-bottom: 30px;
+}
+
+/* Tarjeta del evento */
+.evento-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Fotografía del evento */
+.evento-card img {
+  display: block;
+  width: 100%;
+  max-width: 200px !important;
+  height: auto;
+  border-radius: 8px;
+  margin: 0 auto 15px;
+}
+
+/* Título del evento */
+.evento-card h2 {
+  color: var(--color-club-primary);
+  font-size: 1.15rem;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+/* Información del evento */
+.evento-card p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+/* Cuadrícula de fotografías del evento */
+.eventos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+/* Reducir el espacio superior de la categoría */
+.section:has(.evento-fecha) {
+  padding-top: 25px;
+}
+
+/* Botón volver a Galería */
+.evento-volver {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: var(--color-club-primary, #091d36);
+  color: white;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.evento-volver:hover {
+  background: #facc15;
+  color: #091d36;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .eventos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Móvil */
+@media (max-width: 600px) {
+  .eventos-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Adaptación a móviles */
+@media (max-width: 600px) {
+  .galeria-evento {
+    padding: 25px 0;
+  }
+
+  .evento-card {
+    padding: 15px;
+  }
+
+  .evento-card h2 {
+    font-size: 1.25rem;
+  }
+}

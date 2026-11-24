@@ -1,0 +1,176 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getPages, getTable } from "../../services/pages";
+
+import "../../styles/galeria.css";
+
+const paginas = await getPages();
+
+const paginaGaleria = paginas.find(
+  (pagina: any) => pagina.url_page === "galeria"
+);
+
+const hijasGaleria = paginaGaleria
+  ? paginas.filter(
+      (pagina: any) =>
+        Number(pagina.parent_id_page) === Number(paginaGaleria.id_page)
+    )
+  : [];
+
+// Obtener los módulos del CMS
+const modulos = await getTable("modules");
+
+// Buscar las tablas de las páginas hijas de Galería
+const modulosGaleria = modulos.filter(
+  (modulo: any) =>
+    modulo.type_module === "tables" &&
+    hijasGaleria.some(
+      (pagina: any) =>
+        Number(pagina.id_page) === Number(modulo.id_page_module)
+    )
+);
+
+// Reunir las fotografías de todos los eventos
+const fotografias = (
+  await Promise.all(
+    modulosGaleria.map(async (modulo: any) => {
+      const registros = await getTable(modulo.title_module);
+      const sufijo = modulo.suffix_module;
+
+      // Localizar la página del evento
+      const paginaEvento = hijasGaleria.find(
+        (pagina: any) =>
+          Number(pagina.id_page) === Number(modulo.id_page_module)
+      );
+
+      return registros.map((foto: any) => ({
+        titulo: foto[`titulo_${sufijo}`],
+        fecha: foto[`fecha_${sufijo}`],
+        imagen: foto[`imagen_${sufijo}`],
+        enlace: `/galeria/${paginaEvento?.url_page}`
+      }));
+    })
+  )
+).flat();
+
+console.log("FOTOGRAFÍAS DE LA GALERÍA PRINCIPAL:", fotografias);
+---
+
+<Layout title="Galería | CTM San Juan">
+  <main class="container">
+    <h1>Galería del CTM San Juan</h1>
+    <p>
+        Descubre los mejores momentos del CTM San Juan.
+        Pulsa sobre una fotografía para conocer el evento y toda su información.
+    </p>
+
+        <div class="galeria-grid">
+            {fotografias.map((foto: any) => (
+                <div class="galeria-card">
+            <a href={foto.enlace} class="galeria-enlace">
+                <img
+                src={foto.imagen}
+                alt={foto.titulo}
+                loading="lazy"
+                />
+
+                <div class="galeria-info">
+                <h2>{foto.titulo}</h2>
+                <span>Ver información del evento</span>
+                </div>
+            </a>
+
+            <button
+                type="button"
+                class="galeria-lupa"
+                aria-label={`Ampliar fotografía: ${foto.titulo}`}
+                data-imagen={foto.imagen}
+                data-titulo={foto.titulo}
+                >
+                <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
+                </svg>
+            </button>
+        </div>
+            ))}
+        </div>
+  </main>
+
+    <!-- Visor de fotografías ampliadas -->
+    <div
+    id="galeria-visor"
+    class="galeria-visor"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Fotografía ampliada"
+    hidden
+    >
+    <button
+        type="button"
+        class="galeria-visor-cerrar"
+        aria-label="Cerrar fotografía"
+    >
+        &times;
+    </button>
+
+    <img
+        id="galeria-visor-imagen"
+        src=""
+        alt=""
+    />
+    </div>
+
+</Layout>
+
+
+<script>
+  const visor = document.querySelector<HTMLElement>("#galeria-visor");
+  const imagenVisor = document.querySelector<HTMLImageElement>("#galeria-visor-imagen");
+  const botonCerrar = document.querySelector<HTMLButtonElement>(".galeria-visor-cerrar");
+  const botonesLupa = document.querySelectorAll<HTMLButtonElement>(".galeria-lupa");
+
+  function cerrarVisor() {
+    if (!visor) return;
+
+    visor.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  botonesLupa.forEach((boton) => {
+    boton.addEventListener("click", () => {
+      if (!visor || !imagenVisor) return;
+
+      imagenVisor.src = boton.dataset.imagen || "";
+      imagenVisor.alt = boton.dataset.titulo || "";
+
+      visor.hidden = false;
+      document.body.style.overflow = "hidden";
+      botonCerrar?.focus();
+    });
+  });
+
+  botonCerrar?.addEventListener("click", cerrarVisor);
+
+  visor?.addEventListener("click", (evento) => {
+    if (evento.target === visor) {
+      cerrarVisor();
+    }
+  });
+
+  document.addEventListener("keydown", (evento) => {
+    if (evento.key === "Escape" && visor && !visor.hidden) {
+      cerrarVisor();
+    }
+  });
+</script>
