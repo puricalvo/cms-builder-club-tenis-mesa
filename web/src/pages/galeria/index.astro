@@ -57,12 +57,15 @@ console.log("FOTOGRAFÍAS DE LA GALERÍA PRINCIPAL:", fotografias);
 ---
 
 <Layout title="Galería | CTM San Juan">
-  <main class="container">
-    <h1>Galería del CTM San Juan</h1>
-    <p>
-        Descubre los mejores momentos del CTM San Juan.
-        Pulsa sobre una fotografía para conocer el evento y toda su información.
-    </p>
+  <section class="galeria-principal">
+
+      <div class="container galeria-cabecera">
+        <h1>Galería del CTM San Juan</h1>
+        <p>
+          Descubre los mejores momentos del CTM San Juan.
+          Pulsa sobre una fotografía para conocer el evento y toda su información.
+        </p>
+      </div>
 
         <div class="galeria-grid">
             {fotografias.map((foto: any) => (
@@ -105,7 +108,7 @@ console.log("FOTOGRAFÍAS DE LA GALERÍA PRINCIPAL:", fotografias);
         </div>
             ))}
         </div>
-  </main>
+ </section>
 
     <!-- Visor de fotografías ampliadas -->
     <div

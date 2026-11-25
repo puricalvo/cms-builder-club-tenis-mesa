@@ -4,9 +4,9 @@
 
 /* Cuadrícula de fotografías */
 .galeria-grid {
-  columns: 3;
+  columns: 4;
   column-gap: 3px;
-  margin: 35px 0;
+  margin: 35px 3px;
 }
 
 .galeria-card {
@@ -169,6 +169,27 @@
   background: var(--color-club-primary, #0b1f38);
 }
 
+.galeria-cabecera {
+  text-align: center;
+  padding-top: 50px;
+  padding-bottom: 10px;
+}
+
+.galeria-cabecera h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--color-club-primary, #091d36);
+  margin-bottom: 15px;
+}
+
+.galeria-cabecera p {
+  max-width: 750px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
 /* Adaptación a móviles */
 @media (max-width: 600px) {
   .galeria-visor:not([hidden]) {
@@ -218,15 +239,15 @@
 /* Galería principal en móviles */
 @media (max-width: 600px) {
   .galeria-grid {
-    width: calc(100% + 20px);
-    margin-left: -10px;
-    margin-right: -10px;
-    column-gap: 12px;
+    width: calc(100% - 6px);
+    margin-left: 3px;
+    margin-right: 3px;
+    column-gap: 3px;
   }
 
   .galeria-card {
     margin-bottom: 3px;
-    border-radius: 0px;
+    border-radius: 0;
   }
 }
 

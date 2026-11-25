@@ -8,7 +8,7 @@
 
 .club-hero {
   position: relative;
-  padding: 105px 0 110px;
+  padding: 65px 0 70px;
   background:
     radial-gradient(circle at 85% 30%, rgba(23, 77, 131, .45), transparent 40%),
     var(--navy-dark);
@@ -120,6 +120,8 @@
 
 .club-history-layout .club-paragraphs {
   width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .club-history-subtitle {
@@ -208,6 +210,28 @@
   font-size: 14px;
 }
 
+.club-back {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.club-volver {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #ffcc00;
+  color: #091d36;
+  border-radius: 5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.club-volver:hover,
+.club-volver:focus-visible {
+  background: #ffffff;
+  color: #091d36;
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 850px) {
@@ -241,5 +265,14 @@
 
   .club-closing {
     padding: 65px 0;
+  }
+}
+
+@media (min-width: 769px) {
+  .club-objectives .club-info-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    width: calc((100% - 22px) / 2);
+    justify-self: center;
+    box-sizing: border-box;
   }
 }

@@ -7,7 +7,13 @@
 }
 
 .galeria-evento h1 {
-  margin-bottom: 30px;
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--color-club-primary, #091d36);
+  margin-bottom: 40px;
 }
 
 /* Tarjeta del evento */
@@ -23,7 +29,7 @@
 .evento-card img {
   display: block;
   width: 100%;
-  max-width: 200px !important;
+  max-width: 250px !important;
   height: auto;
   border-radius: 8px;
   margin: 0 auto 15px;
@@ -52,6 +58,12 @@
   align-items: start;
 }
 
+/* Centrar cuando solamente hay una tarjeta */
+.eventos-grid:has(> .evento-card:only-child) {
+  grid-template-columns: minmax(0, 400px);
+  justify-content: center;
+}
+
 /* Reducir el espacio superior de la categoría */
 .section:has(.evento-fecha) {
   padding-top: 25px;
@@ -59,7 +71,9 @@
 
 /* Botón volver a Galería */
 .evento-volver {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
+  margin: 20px auto 0;
   align-items: center;
   padding: 10px 20px;
   background: var(--color-club-primary, #091d36);
