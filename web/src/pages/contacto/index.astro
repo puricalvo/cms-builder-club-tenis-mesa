@@ -1,0 +1,114 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getTable } from "../../services/pages";
+import "../../styles/contacto.css";
+
+const contactos = await getTable("contactos");
+const contacto = contactos[0];
+---
+
+<Layout title="Contacto | CTM San Juan">
+
+  <section class="section contacto-section">
+    <div class="container">
+
+      <h1>{contacto?.titulo_contacto}</h1>
+
+      <p>{contacto?.descripcion_contacto}</p>
+
+      
+
+        <div class="contacto-grid">
+
+            <article class="contacto-card">
+                <span class="contacto-icono">✉️</span>
+                <h2>Correo electrónico</h2>
+                <a href={`mailto:${contacto?.email_contacto}`}>
+                {contacto?.email_contacto}
+                </a>
+            </article>
+
+            <article class="contacto-card">
+                <span class="contacto-icono">📞</span>
+                <h2>Teléfono</h2>
+                <p>{contacto?.name_contacto}</p>
+                <a href={`tel:${contacto?.telefono_contacto}`}>
+                {contacto?.telefono_contacto}
+                </a>
+            </article>
+
+            <article class="contacto-card">
+                <span class="contacto-icono">📍</span>
+                <h2>¿Dónde estamos?</h2>
+                <p>{contacto?.direccion_contacto}</p>
+
+                {contacto?.mapa_contacto && (
+                    <a
+                        href={contacto.mapa_contacto}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="contacto-mapa"
+                    >
+                        Cómo llegar ↗
+                    </a>
+                )}
+            </article>
+
+            <article class="contacto-card">
+                <span class="contacto-icono">🕒</span>
+                <h2>Horarios de entrenamiento</h2>
+                <p>{contacto?.horarios_contacto}</p>
+            </article>
+
+        </div>
+
+        <div class="contacto-redes">
+
+        <h2>Síguenos en nuestras redes sociales</h2>
+
+            <div class="redes-sociales">
+
+                <a
+                    href={contacto?.facebook_contacto || undefined}
+                    class="red-social facebook"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Facebook"
+                >
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+
+                <a
+                    href={contacto?.instagram_contacto || undefined}
+                    class="red-social instagram"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                >
+                    <i class="fab fa-instagram"></i>
+                </a>
+
+                <a
+                    href={contacto?.youtube_contacto || undefined}
+                    class="red-social youtube"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="YouTube"
+                >
+                    <i class="fab fa-youtube"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="contacto-back">
+            <a href="/" class="contacto-volver">
+                ← Volver al inicio
+            </a>
+        </div>
+
+    </div>
+  </section>
+
+</Layout>
