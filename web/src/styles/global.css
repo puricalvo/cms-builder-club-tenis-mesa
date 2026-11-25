@@ -223,11 +223,13 @@ img {
 .btn-primary {
   background: var(--yellow);
   color: var(--navy-dark);
+  border: 1px solid transparent;
 }
 
 .btn-primary:hover {
-  background: #FFDD52;
-  transform: translateY(-3px);
+  background: transparent;
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,.45);
 }
 
 .btn-outline {
@@ -236,8 +238,9 @@ img {
 }
 
 .btn-outline:hover {
-  background: var(--white);
+  background: var(--yellow);
   color: var(--navy);
+  border-color: var(--yellow);
 }
 
 /* =========================================
