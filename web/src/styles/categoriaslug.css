@@ -90,6 +90,15 @@
   color: #091d36;
 }
 
+/* Cabecera de los eventos */
+.evento-cabecera {
+  text-align: center;
+}
+
+.evento-cabecera .eyebrow {
+  justify-content: center;
+}
+
 /* Tablet */
 @media (max-width: 900px) {
   .eventos-grid {

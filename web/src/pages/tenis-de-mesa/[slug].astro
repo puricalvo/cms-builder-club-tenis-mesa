@@ -1,0 +1,118 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getTable } from "../../services/pages";
+import { decode } from "../../services/utils";
+import "../../styles/tenis-mesa-detalle.css";
+
+type Articulo = {
+  id_tenis_mesa_articulo: number;
+  titulo_tenis_mesa_articulo: string;
+  contenido_tenis_mesa_articulo: string;
+  imagen_tenis_mesa_articulo: string;
+  orden_tenis_mesa_articulo: number;
+  fuente_tenis_mesa_articulo: string;
+  estado_tenis_mesa_articulo: string;
+  slug_tenis_mesa_articulo: string;
+};
+
+interface Props {
+  articulo: Articulo;
+}
+
+export async function getStaticPaths() {
+  const articulos = await getTable("tenis_mesa_articulos");
+
+  return articulos
+    .filter((articulo: Articulo) =>
+      articulo.estado_tenis_mesa_articulo?.toLowerCase() === "publicado" &&
+      articulo.slug_tenis_mesa_articulo
+    )
+    .map((articulo: Articulo) => ({
+      params: {
+        slug: decode(articulo.slug_tenis_mesa_articulo)
+      },
+      props: { articulo }
+    }));
+}
+
+const { articulo } = Astro.props;
+
+const titulo = decode(articulo.titulo_tenis_mesa_articulo);
+const contenido = decode(articulo.contenido_tenis_mesa_articulo || "");
+const imagen = decode(articulo.imagen_tenis_mesa_articulo || "");
+const fuente = decode(articulo.fuente_tenis_mesa_articulo || "");
+
+// Separar el contenido en párrafos independientes
+const parrafos = contenido
+  .trim()
+  .split(/\r?\n\s*\r?\n/)
+  .map((parrafo: string) => parrafo.trim())
+  .filter((parrafo: string) => parrafo.length > 0);
+---
+
+<Layout title={`${titulo} | CTM San Juan`}>
+
+  <section class="section tenis-detalle-page">
+
+    <div class="container tenis-detalle-container">
+
+      <a href="/tenis-de-mesa" class="tenis-detalle-inicio">
+        ← Volver a Tenis de mesa
+      </a>
+
+      <header class="tenis-detalle-header">
+
+        <span class="eyebrow">
+          Nuestra pasión
+        </span>
+
+        <h1>{titulo}</h1>
+
+      </header>
+
+      {imagen && (
+        <img
+          src={imagen}
+          alt={titulo}
+          class="tenis-detalle-imagen"
+        />
+      )}
+
+      <div class="tenis-detalle-contenido">
+        {parrafos.map((parrafo: string) => (
+          <p>{parrafo}</p>
+        ))}
+      </div>
+
+      {fuente && (
+        <div class="tenis-detalle-fuente">
+
+          <h3>Fuente de información</h3>
+
+          <a
+            href={fuente}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {fuente} ↗
+          </a>
+
+        </div>
+      )}
+
+      <div class="tenis-detalle-back">
+
+        <a
+          href="/tenis-de-mesa"
+          class="tenis-detalle-volver"
+        >
+          ← Volver a Tenis de mesa
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</Layout>

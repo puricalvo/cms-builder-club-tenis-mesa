@@ -1,0 +1,184 @@
+
+---
+import Layout from "../../layouts/Layout.astro";
+import { getTable } from "../../services/pages";
+import { decode } from "../../services/utils";
+import "../../styles/tenis-mesa.css";
+
+type Articulo = {
+  id_tenis_mesa_articulo: number;
+  titulo_tenis_mesa_articulo: string;
+  contenido_tenis_mesa_articulo: string;
+  imagen_tenis_mesa_articulo: string;
+  orden_tenis_mesa_articulo: number;
+  fuente_tenis_mesa_articulo: string;
+  estado_tenis_mesa_articulo: string;
+  slug_tenis_mesa_articulo: string;
+};
+
+// Recuperar todos los artículos del CMS
+const articulos = await getTable("tenis_mesa_articulos");
+
+// Mostrar únicamente los artículos publicados
+const articles: Articulo[] = articulos
+  .filter((articulo: Articulo) =>
+    articulo.estado_tenis_mesa_articulo?.toLowerCase() === "publicado" &&
+    articulo.slug_tenis_mesa_articulo
+  )
+  .sort((a: Articulo, b: Articulo) =>
+    Number(a.orden_tenis_mesa_articulo) -
+    Number(b.orden_tenis_mesa_articulo)
+  );
+
+// Obtener los dos primeros párrafos del artículo
+function obtenerResumen(contenido: string) {
+  const texto = decode(contenido || "").trim();
+
+  const parrafos = texto
+    .split(/\r?\n\s*\r?\n/)
+    .filter((parrafo) => parrafo.trim());
+
+  const resumen = parrafos.slice(0, 2).join("\n\n");
+
+  return parrafos.length > 2
+    ? resumen + "..."
+    : resumen;
+}
+---
+
+<Layout
+  title="Tenis de mesa | CTM San Juan"
+  description="Descubre la historia, los beneficios, las reglas y las curiosidades del tenis de mesa."
+>
+
+  <section class="section tenis-mesa-page">
+
+    <div class="container">
+
+      <div class="tenis-mesa-header">
+
+        <span class="eyebrow">
+          Nuestra pasión
+        </span>
+
+        <h1 class="section-title">
+          Descubre el tenis de mesa
+        </h1>
+
+        <p class="section-description">
+          Mucho más que un deporte. Descubre su historia,
+          sus beneficios, sus valores y todo lo que hace
+          del tenis de mesa una actividad apasionante.
+        </p>
+
+      </div>
+
+      {articles.length > 0 ? (
+
+        <div class="tenis-mesa-listado">
+
+          {articles.map((item, index) => (
+
+            <article
+              class:list={[
+                "tenis-mesa-card",
+                { "tenis-mesa-invertida": index % 2 !== 0 }
+              ]}
+            >
+
+              {item.imagen_tenis_mesa_articulo && (
+
+                <a
+                  href={`/tenis-de-mesa/${decode(item.slug_tenis_mesa_articulo)}`}
+                  class="tenis-mesa-imagen-enlace"
+                >
+
+                  <img
+                    src={decode(item.imagen_tenis_mesa_articulo)}
+                    alt={decode(item.titulo_tenis_mesa_articulo)}
+                    class:list={[
+                        "tenis-mesa-imagen",
+                        {
+                            "tenis-mesa-imagen-completa":
+                            decode(item.slug_tenis_mesa_articulo) ===
+                            "el-material-y-los-estilos-de-juego"
+                        }
+                    ]}
+                    loading="lazy"
+                  />
+
+                </a>
+
+              )}
+
+              <div class="tenis-mesa-contenido">
+
+                <h2 class="tenis-mesa-titulo">
+
+                  <a
+                    href={`/tenis-de-mesa/${decode(item.slug_tenis_mesa_articulo)}`}
+                  >
+                    {decode(item.titulo_tenis_mesa_articulo)}
+                  </a>
+
+                </h2>
+
+                <div class="tenis-mesa-resumen">
+                {obtenerResumen(item.contenido_tenis_mesa_articulo)
+                    .split(/\r?\n\s*\r?\n/)
+                    .map((parrafo: string) => (
+                    <p>{parrafo}</p>
+                    ))}
+                </div>
+
+                <a
+                  href={`/tenis-de-mesa/${decode(item.slug_tenis_mesa_articulo)}`}
+                  class="tenis-mesa-leer"
+                >
+                  Leer más →
+                </a>
+
+              </div>
+
+            </article>
+
+          ))}
+
+        </div>
+
+      ) : (
+
+        <p class="tenis-mesa-vacio">
+          Actualmente no hay artículos disponibles.
+        </p>
+
+      )}
+
+      <div class="tenis-mesa-invitacion">
+
+        <h2>¿Te animas a practicar tenis de mesa?</h2>
+
+        <p>
+          Descubre nuestro club y comparte con nosotros
+          la pasión por este deporte.
+        </p>
+
+        <a href="/contacto" class="btn btn-primary">
+          Ven a conocernos →
+        </a>
+
+      </div>
+
+      <div class="tenis-mesa-back">
+
+        <a href="/" class="tenis-mesa-volver">
+          ← Volver al inicio
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</Layout>

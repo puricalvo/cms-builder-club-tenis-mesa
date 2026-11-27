@@ -909,3 +909,17 @@ body > main {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* Ajuste responsive de los enlaces del footer */
+@media (max-width: 768px) {
+  .footer-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .footer-links {
+    flex-wrap: wrap;
+    white-space: normal;
+    justify-content: center;
+    gap: 8px 12px;
+  }
+}

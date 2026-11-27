@@ -110,7 +110,10 @@ const fotografias = esTodosLosEventos
   <section class="section galeria-evento">
     <div class="container">
 
-      <h1>{pagina.title_page}</h1>
+      <div class="evento-cabecera">
+        <span class="eyebrow">Galería de eventos</span>
+        <h1>{pagina.title_page}</h1>
+      </div>
 
         <div class="eventos-grid">
             {fotografias.map((foto: any) => (

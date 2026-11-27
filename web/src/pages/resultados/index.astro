@@ -32,15 +32,19 @@ const resultados = registros
 <Layout title="Resultados | CTM San Juan">
   <section class="section results-section">
     <div class="container">
-      <header>
+      <header class="results-header">
         <span class="eyebrow">Competición</span>
-        <h1>Resultados</h1>
-        <p>Consulta los resultados de nuestros equipos.</p>
+        <h1 class="section-title">Resultados</h1>
+        <p class="section-description">
+          Consulta los resultados de nuestros equipos.
+        </p>
       </header>
 
         <div class="results-grid">
             {resultados.length === 0 ? (
-                <p>Todavía no hay resultados disponibles.</p>
+               <p class="results-empty">
+                Todavía no hay resultados disponibles.
+              </p>
             ) : (
                 resultados.map((partido: any) => {
                 const esVisitante =

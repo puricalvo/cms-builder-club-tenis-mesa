@@ -1,0 +1,239 @@
+
+/* Cabecera de la página */
+
+.tenis-mesa-header {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+/* Espacio superior de la página */
+.section.tenis-mesa-page {
+  padding-top: 45px;
+}
+
+.tenis-mesa-header .section-description {
+  max-width: 750px;
+  margin: 15px auto 0;
+}
+
+/* Listado de artículos */
+
+.tenis-mesa-listado {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Tarjetas */
+
+.tenis-mesa-card {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, .08);
+}
+
+/* Alternar imágenes */
+
+.tenis-mesa-invertida .tenis-mesa-imagen-enlace {
+  order: 2;
+}
+
+.tenis-mesa-invertida .tenis-mesa-contenido {
+  order: 1;
+}
+
+/* Fotografías */
+
+.tenis-mesa-imagen-enlace {
+  display: block;
+  height: 100%;
+  min-height: 320px;
+  overflow: hidden;
+}
+
+.tenis-mesa-imagen {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  object-fit: cover;
+  transition: transform .4s ease;
+}
+
+.tenis-mesa-imagen-enlace:hover .tenis-mesa-imagen {
+  transform: scale(1.05);
+}
+
+/* Contenido de los artículos */
+
+.tenis-mesa-contenido {
+  padding: 35px;
+}
+
+.tenis-mesa-titulo {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 32px;
+  line-height: 1.15;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.tenis-mesa-titulo a {
+  color: var(--color-club-primary, #091d36);
+  text-decoration: none;
+}
+
+.tenis-mesa-titulo a:hover {
+  text-decoration: underline;
+}
+
+.tenis-mesa-resumen {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.tenis-mesa-resumen p {
+  white-space: pre-line;
+  margin: 0 0 16px;
+}
+
+.tenis-mesa-resumen p:last-child {
+  margin-bottom: 0;
+}
+
+/* Enlace Leer más */
+
+.tenis-mesa-leer {
+  display: inline-block;
+  color: var(--color-club-primary, #091d36);
+  font-weight: 700;
+  text-decoration: none;
+  transition: color .2s ease;
+}
+
+.tenis-mesa-leer:hover {
+  color: #a67c00;
+}
+
+/* Sin artículos */
+
+.tenis-mesa-vacio {
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* Invitación a conocer el club */
+
+.tenis-mesa-invitacion {
+  background: var(--color-club-primary, #091d36);
+  color: #fff;
+  text-align: center;
+  border-radius: 16px;
+  padding: 45px 25px;
+  margin-top: 45px;
+}
+
+.tenis-mesa-invitacion h2 {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 36px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.tenis-mesa-invitacion p {
+  margin-bottom: 25px;
+  line-height: 1.7;
+}
+
+/* Botón volver al inicio */
+
+.tenis-mesa-back {
+  text-align: center;
+  margin-top: 35px;
+}
+
+.tenis-mesa-volver {
+  display: inline-block;
+  background: var(--color-club-primary, #091d36);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background .3s ease, color .3s ease;
+}
+
+.tenis-mesa-volver:hover {
+  background: var(--yellow);
+  color: var(--navy);
+}
+
+/* Mostrar la infografía de las gomas completa */
+.tenis-mesa-imagen.tenis-mesa-imagen-completa {
+  object-fit: contain;
+}
+
+
+
+/* Diseño responsive */
+
+@media (max-width: 768px) {
+
+  .tenis-mesa-header {
+    margin-bottom: 30px;
+  }
+
+  .tenis-mesa-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tenis-mesa-invertida .tenis-mesa-imagen-enlace {
+    order: 0;
+  }
+
+  .tenis-mesa-invertida .tenis-mesa-contenido {
+    order: 0;
+  }
+
+  .tenis-mesa-imagen-enlace {
+    min-height: 0;
+    height: auto;
+  }
+
+  .tenis-mesa-imagen {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+  }
+
+  .tenis-mesa-contenido {
+    padding: 25px 20px;
+  }
+
+  .tenis-mesa-titulo {
+    font-size: 28px;
+  }
+
+  .tenis-mesa-resumen {
+    font-size: 15px;
+  }
+
+  .tenis-mesa-invitacion {
+    padding: 30px 20px;
+  }
+
+  .tenis-mesa-invitacion h2 {
+    font-size: 28px;
+  }
+
+  .tenis-mesa-page {
+   padding-top: 30px;
+ }
+}
+
