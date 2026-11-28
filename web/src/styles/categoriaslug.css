@@ -29,8 +29,8 @@
 .evento-card img {
   display: block;
   width: 100%;
-  max-width: 250px !important;
-  height: auto;
+  height: 300px;
+  object-fit: contain;
   border-radius: 8px;
   margin: 0 auto 15px;
 }
@@ -55,7 +55,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* Centrar cuando solamente hay una tarjeta */
@@ -125,5 +125,31 @@
 
   .evento-card h2 {
     font-size: 1.25rem;
+  }
+}
+
+/* Centrar las filas incompletas en escritorio */
+@media (min-width: 901px) {
+  .eventos-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .eventos-grid > .evento-card {
+    grid-column: span 2;
+  }
+
+  /* Cuando sobra una tarjeta */
+  .eventos-grid > .evento-card:last-child:nth-child(3n + 1) {
+    grid-column: 3 / span 2;
+  }
+
+  /* Cuando sobran dos tarjetas */
+  .eventos-grid > .evento-card:nth-last-child(2):nth-child(3n + 1) {
+    grid-column: 2 / span 2;
+  }
+
+  /* Cuando solamente existe una tarjeta */
+  .eventos-grid > .evento-card:only-child {
+    grid-column: 1;
   }
 }

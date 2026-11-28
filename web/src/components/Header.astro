@@ -59,7 +59,11 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
           href={link.href}
           class:list={[
             "nav-link",
-            { active: currentPath === link.href || currentPath === link.href + "/" }
+            {
+              active:
+                currentPath === link.href ||
+                (link.href !== "/" && currentPath.startsWith(link.href + "/"))
+            }
           ]}
         >
           {link.label}

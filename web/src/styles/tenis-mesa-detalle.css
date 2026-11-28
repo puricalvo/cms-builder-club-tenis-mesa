@@ -20,7 +20,8 @@
 }
 
 .tenis-detalle-inicio:hover {
-  text-decoration: underline;
+  color: #eab308;
+  text-decoration: none;
 }
 
 /* Cabecera del artículo */
